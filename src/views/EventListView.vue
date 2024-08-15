@@ -17,16 +17,17 @@ const props = defineProps({
     required: true
   }
 })
+
 onMounted(() => {
   watchEffect(() => {
-    EventService.getEvents(props.eventsPerPage, props.page).then(
-      (response: AxiosResponse<Event[]>) => {
+    EventService.getEvents(props.eventsPerPage, props.page)
+      .then((response: AxiosResponse<Event[]>) => {
         events.value = response.data
         totalEvent.value = parseInt(response.headers['x-total-count'])
-      }
-    )
+      })
   })
 })
+
 const hasNextPage = computed(() => {
   const totalPages = Math.ceil(totalEvent.value / props.eventsPerPage)
   return props.page < totalPages && events.value.length > 0
@@ -35,45 +36,28 @@ const hasNextPage = computed(() => {
 
 <template>
   <h1>Event for good</h1>
-  <!--new element-->
   <div class="flex flex-col items-center">
     <EventCard v-for="event in events" :key="event.id" :event="event"></EventCard>
-    <EventInfo v-for="event in events" :key="event.id" :event="event"></EventInfo>
-    <div class="pagination">
+    <div class="flex w-72">
       <RouterLink
         :to="{ name: 'event-list-view', query: { page: page - 1 } }"
         rel="prev"
         v-if="page != 1"
-        id="page-prev"
+        class="flex-1 text-left no-underline text-gray-800"
       >
-        Prev Page</RouterLink
-      >
+        Prev Page
+      </RouterLink>
       <RouterLink
         :to="{ name: 'event-list-view', query: { page: page + 1 } }"
         rel="next"
         v-if="hasNextPage"
-        id="page-next"
+        class="flex-1 text-right no-underline text-gray-800"
       >
-        Next Page</RouterLink
-      >
+        Next Page
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <style scoped>
-.panigation {
-  display: flex;
-  width: 290px;
-}
-.panigation a {
-  flex: 1;
-  text-decoration: none;
-  color: #2c3e50;
-}
-#page-prev {
-  text-align: left;
-}
-#page-next {
-  text-align: right;
-}
 </style>
