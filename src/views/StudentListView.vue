@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import StudentCard from '@/components/StudentCard.vue'
-import type { Student } from '@/type';
+import type { Student } from '@/type'
 import { ref, onMounted } from 'vue'
 import StudentService from '@/services/StudentService'
 

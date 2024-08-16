@@ -20,11 +20,12 @@ const props = defineProps({
 
 onMounted(() => {
   watchEffect(() => {
-    EventService.getEvents(props.eventsPerPage, props.page)
-      .then((response: AxiosResponse<Event[]>) => {
+    EventService.getEvents(props.eventsPerPage, props.page).then(
+      (response: AxiosResponse<Event[]>) => {
         events.value = response.data
         totalEvent.value = parseInt(response.headers['x-total-count'])
-      })
+      }
+    )
   })
 })
 
@@ -59,5 +60,4 @@ const hasNextPage = computed(() => {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
